@@ -2,6 +2,8 @@ import galleryItems from './gallery-items.js';
 console.log(galleryItems);
 
 const ulRef = document.querySelector('.js-gallery');
+const divRef = document.querySelector('.lightbox');
+const imgLightRef = document.querySelector('.lightbox__image');
 
 const createProduct = galleryItems.map(galleryItem => {
 
@@ -27,16 +29,24 @@ const createProduct = galleryItems.map(galleryItem => {
 ulRef.append(...createProduct);
 // console.dir(ulRef);
 
-ulRef.addEventListener('click', onGallerysClick);
+ulRef.addEventListener('click', onGallerysClick)
 
 function onGallerysClick(event) {
-    // console.log(event.target.nodeName);
+    event.preventDefault();
 
     if(event.target.nodeName !== 'IMG') {
         console.log('не попал')
         return;
     }
-    const imgClik = event.target;
-    imgClik.dataset.src = galleryItem.original;
-   console.log(imgClik.src)
-}
+    // console.dir(event.target.dataset.source);
+
+    divRef.classList.add('is-open');
+    imgLightRef.src = event.target.dataset.source;
+};
+
+const closeModalBtn = document.querySelector('button[data-action="close-lightbox"]');
+closeModalBtn.addEventListener('click', () => {
+  divRef.classList.remove('is-open');
+  imgLightRef.removeAttribute("src"); 
+});
+
